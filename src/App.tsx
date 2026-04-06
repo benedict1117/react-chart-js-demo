@@ -51,7 +51,7 @@ const STATIC_OPTIONS: ChartOptions<"bar"> = {
     },
     title: {
       display: true,
-      text: "Static Chart"
+      text: "Dynamic Chart"
     }
   }
 }
