@@ -1,6 +1,12 @@
 # React ChartJS Demo
 Simple tutorial for visualizing data.
 
+## Usage
+You can change the input value and all graph with change too! Cool!
+
+## Preview
+![Preview](preview.png)
+
 ## To run this project:
 1. Clone this repository `git clone https://github.com/khianvictorycalderon/react-chart-js-demo.git`
 2. Run `npm install`
