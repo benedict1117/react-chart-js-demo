@@ -134,7 +134,7 @@ export default function App() {
             <input
               type="number"
               className="w-20 p-1 border-2 border-black rounded text-center"
-              value={values[index]}
+              value={values[index] || undefined}
               onChange={(e) => handleChangeValue(index, Number(e.target.value || 0))}
             />
           </div>
