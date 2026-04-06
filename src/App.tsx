@@ -1,98 +1,95 @@
-import { 
+import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend,
   type ChartOptions,
-  type ChartData
+  type ChartData,
 } from "chart.js";
 import { useState } from "react";
+import { Bar, Pie } from "react-chartjs-2";
 
-// Register required components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-import { Bar } from "react-chartjs-2";
+ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
 const LABELS = ["Banana", "Apple", "Mango", "Grapes", "Kiwi"];
+const COLORS = ["#ef4444", "#3b82f6", "#eab308", "#22c55e", "#a855f7"];
 
-const INITIAL_DATA: ChartData<"bar", number[], string> = {
-  labels: LABELS,
-  datasets: [
-    {
-      label: "Favorite Fruits",
-      data: [3, 3, 3, 3, 3],
-      backgroundColor: [
-        "#ef4444", // red-500
-        "#3b82f6", // blue-500
-        "#eab308", // yellow-500
-        "#22c55e", // green-500
-        "#a855f7", // purple-500
-      ]
-    }
-  ]
-}
-
-const STATIC_OPTIONS: ChartOptions<"bar"> = {
-  responsive: true,
-  maintainAspectRatio: false, // allow custom height
-  plugins: {
-    legend: {
-      position: "top"
-    },
-    title: {
-      display: true,
-      text: "Dynamic Chart"
-    }
-  }
-}
+const INITIAL_VALUES = [3, 3, 3, 3, 3];
 
 export default function App() {
+  const [values, setValues] = useState<number[]>(INITIAL_VALUES);
 
-  const [chartData, setChartData] = useState<ChartData<"bar", number[], string>>(INITIAL_DATA);
+  // Update one value
+  const handleChangeValue = (index: number, value: number) => {
+    const newValues = [...values];
+    newValues[index] = value;
+    setValues(newValues);
+  };
 
-  const handleChangeChartDate = (index: number, value: number) => {
+  // Bar chart data (Type-safe)
+  const barData: ChartData<"bar", number[], string> = {
+    labels: LABELS,
+    datasets: [
+      {
+        label: "Favorite Fruits",
+        data: values,
+        backgroundColor: COLORS,
+      },
+    ],
+  };
 
-    // Create new array of values
-    const newData = [...chartData.datasets[0].data];
-    newData[index] = value;
+  // Pie chart data (Type-safe)
+  const pieData: ChartData<"pie", number[], string> = {
+    labels: LABELS,
+    datasets: [
+      {
+        label: "Favorite Fruits",
+        data: values,
+        backgroundColor: COLORS,
+      },
+    ],
+  };
 
-    // Return new array
-    setChartData({
-      ...chartData,
-      datasets: [
-        {
-          ...chartData.datasets[0],
-          data: newData
-        }
-      ]
-    });
+  const barOptions: ChartOptions<"bar"> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: "top" }, title: { display: true, text: "Bar Chart" } },
+  };
 
-  }
+  const pieOptions: ChartOptions<"pie"> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: "top" }, title: { display: true, text: "Pie Chart" } },
+  };
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <div className="text-center max-w-7xl w-full max-h-[80vh]">
-        <Bar data={chartData} options={STATIC_OPTIONS} />
+    <div className="flex flex-col items-center justify-center gap-8 p-6 bg-gray-100 min-h-screen">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-6xl h-[400px]">
+        <div className="bg-white p-4 rounded-xl shadow">
+          <Bar data={barData} options={barOptions} />
+        </div>
+        <div className="bg-white p-4 rounded-xl shadow">
+          <Pie data={pieData} options={pieOptions} />
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-4 justify-center mt-4">
         {LABELS.map((item, index) => (
-          <input 
-            className="bg-neutral-200 border-2 border-black"
-            key={`${item}-${index}`}
-            value={chartData.datasets[0].data[index] || undefined}
-            onChange={(e) => handleChangeChartDate(index, Number(e.target.value || 0))}
-            type="number" 
+          <div key={item} className="flex flex-col items-center">
+            <label className="mb-1 font-medium">{item}</label>
+            <input
+              type="number"
+              className="w-20 p-1 border-2 border-black rounded text-center"
+              value={values[index]}
+              onChange={(e) => handleChangeValue(index, Number(e.target.value || 0))}
             />
+          </div>
         ))}
       </div>
     </div>
-  )
+  );
 }
