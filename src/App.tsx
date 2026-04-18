@@ -19,7 +19,7 @@ import {
   type ChartData,
 } from "chart.js";
 import { useState } from "react";
-import { Bar, Pie, Line, Doughnut, Radar, PolarArea, Bubble, Scatter } from "react-chartjs-2";
+import { Bar, Pie, Line, Doughnut } from "react-chartjs-2";
 
 // Register all Chart.js components we need
 ChartJS.register(
@@ -40,8 +40,8 @@ ChartJS.register(
   ScatterController
 );
 
-const LABELS = ["Banana", "Apple", "Mango", "Grapes", "Kiwi"];
-const COLORS = ["#ef4444", "#3b82f6", "#eab308", "#22c55e", "#a855f7"];
+const LABELS = ["Healthy", "Diagnosed", "Under Treatment", "Recovered", "With Disability"];
+const COLORS = ["#A5E3F9", "#29A888", "#0F52BA", "#ed29ff", "#ff29bb"];
 const INITIAL_VALUES = [3, 5, 2, 4, 1];
 
 export default function App() {
@@ -56,73 +56,30 @@ export default function App() {
   // Derived chart data
   const barData: ChartData<"bar", number[], string> = {
     labels: LABELS,
-    datasets: [{ label: "Favorite Fruits", data: values, backgroundColor: COLORS }],
+    datasets: [{ label: "Population Health Status", data: values, backgroundColor: COLORS }],
   };
 
   const pieData: ChartData<"pie", number[], string> = {
     labels: LABELS,
-    datasets: [{ label: "Favorite Fruits", data: values, backgroundColor: COLORS }],
+    datasets: [{ label: "Population Health Status", data: values, backgroundColor: COLORS }],
   };
 
   const doughnutData: ChartData<"doughnut", number[], string> = {
     labels: LABELS,
-    datasets: [{ label: "Favorite Fruits", data: values, backgroundColor: COLORS }],
+    datasets: [{ label: "Disease & Diagnosis Data", data: values, backgroundColor: COLORS }],
   };
 
   const lineData: ChartData<"line", number[], string> = {
     labels: LABELS,
-    datasets: [{ label: "Favorite Fruits", data: values, borderColor: "#3b82f6", backgroundColor: "#93c5fd", fill: true }],
+    datasets: [{ label: "Disability & Functional Status", data: values, borderColor: "#3b82f6", backgroundColor: "#93c5fd", fill: true }],
   };
 
-  const radarData: ChartData<"radar", number[], string> = {
-    labels: LABELS,
-    datasets: [
-      {
-        label: "Favorite Fruits",
-        data: values,
-        backgroundColor: "rgba(59, 130, 246, 0.2)",
-        borderColor: "#3b82f6",
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const polarAreaData: ChartData<"polarArea", number[], string> = {
-    labels: LABELS,
-    datasets: [{ label: "Favorite Fruits", data: values, backgroundColor: COLORS }],
-  };
-
-  const scatterData: ChartData<"scatter", { x: number; y: number }[], string> = {
-    labels: LABELS,
-    datasets: [
-      {
-        label: "Favorite Fruits Scatter",
-        data: values.map((v, i) => ({ x: i + 1, y: v })),
-        backgroundColor: "#3b82f6",
-      },
-    ],
-  };
-
-  const bubbleData: ChartData<"bubble", { x: number; y: number; r: number }[], string> = {
-    labels: LABELS,
-    datasets: [
-      {
-        label: "Favorite Fruits Bubble",
-        data: values.map((v, i) => ({ x: i + 1, y: v, r: v * 3 })),
-        backgroundColor: "#ef4444",
-      },
-    ],
-  };
-
-  // Common options
+ 
   const barOptions: ChartOptions<"bar"> = { responsive: true, plugins: { legend: { position: "top" } } };
   const pieOptions: ChartOptions<"pie"> = { responsive: true, plugins: { legend: { position: "top" } } };
   const doughnutOptions: ChartOptions<"doughnut"> = { responsive: true, plugins: { legend: { position: "top" } } };
   const lineOptions: ChartOptions<"line"> = { responsive: true, plugins: { legend: { position: "top" } } };
-  const radarOptions: ChartOptions<"radar"> = { responsive: true, plugins: { legend: { position: "top" } } };
-  const polarAreaOptions: ChartOptions<"polarArea"> = { responsive: true, plugins: { legend: { position: "top" } } };
-  const scatterOptions: ChartOptions<"scatter"> = { responsive: true, plugins: { legend: { position: "top" } } };
-  const bubbleOptions: ChartOptions<"bubble"> = { responsive: true, plugins: { legend: { position: "top" } } };
+ 
   
   return (
     <div className="flex flex-col items-center justify-center gap-8 p-6 bg-gray-100 min-h-screen">
@@ -155,18 +112,7 @@ export default function App() {
         <div className="h-[300px] bg-white p-4 rounded-xl shadow">
           <Line data={lineData} options={lineOptions} />
         </div>
-        <div className="h-[300px] bg-white p-4 rounded-xl shadow">
-          <Radar data={radarData} options={radarOptions} />
-        </div>
-        <div className="h-[300px] bg-white p-4 rounded-xl shadow">
-          <PolarArea data={polarAreaData} options={polarAreaOptions} />
-        </div>
-        <div className="h-[300px] bg-white p-4 rounded-xl shadow">
-          <Scatter data={scatterData} options={scatterOptions} />
-        </div>
-        <div className="h-[300px] bg-white p-4 rounded-xl shadow">
-          <Bubble data={bubbleData} options={bubbleOptions} />
-        </div>
+        
       </div>
     </div>
   );
